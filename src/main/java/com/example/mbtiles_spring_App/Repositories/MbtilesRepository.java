@@ -23,8 +23,8 @@ public class MbtilesRepository {
     private static final Logger log = LoggerFactory.getLogger(MbtilesRepository.class);
     private static final int MB = 1048576;
 
-    @Value("${mbtiles.upload.dir}")
-    private String uploadDir;
+    @Value("${mbtiles.map.storage.dir}")
+    private String mapStorageDir;
 
     @Value("${mbtiles.max-file-size}")
     private long maxFileSize;
@@ -34,10 +34,10 @@ public class MbtilesRepository {
 
     @PostConstruct
     public void scanningForMaps() throws MBTilesReadException {
-        log.info("Сканирование директории '{}' на наличие .mbtiles файлов...", uploadDir);
-        File[] files = new File(uploadDir).listFiles();
+        log.info("Сканирование директории '{}' на наличие .mbtiles файлов...", mapStorageDir);
+        File[] files = new File(mapStorageDir).listFiles();
         if (files == null) {
-            log.warn("Директория '{}' не существует или пуста.", uploadDir);
+            log.warn("Директория '{}' не существует или пуста.", mapStorageDir);
             return;
         }
 
@@ -61,14 +61,14 @@ public class MbtilesRepository {
             log.warn("Файл '{}' имеет неверный формат", file.getOriginalFilename());
             throw new IOException("Invalid file format");
         }
-
+        String uploadDir = System.getProperty("user.dir") + File.separator + mapStorageDir;
         File dir = new File(uploadDir);
         if (!dir.exists() && !dir.mkdirs()) {
             log.error("Не удалось создать директорию '{}'", uploadDir);
             throw new IOException("Failed to create upload directory");
         }
 
-        String systemFileName = fileName + "#" + System.currentTimeMillis();
+        String systemFileName = fileName + "!" + System.currentTimeMillis();
         String filePath = uploadDir + File.separator + systemFileName + ".mbtiles";
 
         File newFile = new File(filePath);
