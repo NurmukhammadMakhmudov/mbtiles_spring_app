@@ -1,31 +1,38 @@
 package com.example.mbtiles_spring_App.DTO;
 
-
 import jakarta.validation.constraints.*;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 public class MapInfoResponse {
-    @NotBlank
+
+    @Schema(description = "Название карты")
     private String name;
+
+    @Schema(description = "Авторские права на карту")
     private String attribution;
-    @NotBlank
+
+    @Schema(description = "Имя набора тайлов", example = "satellite")
     private String tileSetName;
-    @NotBlank
+
+    @Schema(description = "Тип MIME для тайлов", example = "image/png")
     private String tileMimeType;
-    @Min(0)
+
+    @Schema(description = "Минимальный зум", example = "0")
     private int minZoom;
-    @Min(0)
+
+    @Schema(description = "Максимальный зум", example = "18")
     private int maxZoom;
-    @DecimalMin("-180")
-    @DecimalMax("180")
+
+    @Schema(description = "Минимальная долгота", example = "-180.0")
     private double minLon;
-    @DecimalMin("-180")
-    @DecimalMax("180")
+
+    @Schema(description = "Максимальная долгота", example = "180.0")
     private double maxLon;
-    @DecimalMin("-180")
-    @DecimalMax("180")
+
+    @Schema(description = "Минимальная широта", example = "-85.0511")
     private double minLat;
-    @DecimalMin("-180")
-    @DecimalMax("180")
+
+    @Schema(description = "Максимальная широта", example = "85.0511")
     private double maxLat;
 
     public MapInfoResponse(String name,
@@ -129,4 +136,5 @@ public class MapInfoResponse {
     public void setMaxLat(double maxLat) {
         this.maxLat = maxLat;
     }
+
 }
